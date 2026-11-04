@@ -9,11 +9,12 @@ const audio = document.getElementById('audio');
 searchForm.addEventListener('submit', function(event) {
 
     event.preventDefault();
-    searchInput.value = '';
+    
 
     const word = searchInput.value;
 
     searchWord(word);
+    searchInput.value = '';
 
 });
 
