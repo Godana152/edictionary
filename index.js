@@ -36,14 +36,14 @@ async function searchWord(word) {
         console.log(data);
         // displaying to the HTML page
 
-        const wordData = data[0];
+//         const wordData = data[0];
 
-wordDisplay.textContent = wordData.word;
+// wordDisplay.textContent = wordData.word;
 
-partOfSpeech.textContent = wordData.meanings[0].partOfSpeech;
+// partOfSpeech.textContent = wordData.meanings[0].partOfSpeech;
 
-definitionDisplay.textContent =
-    wordData.meanings[0].definitions[0].definition;
+// definitionDisplay.textContent =
+//     wordData.meanings[0].definitions[0].definition;
 
 
 
