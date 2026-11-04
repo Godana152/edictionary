@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edictionary</title>
+</head>
+<body>
+    <h1>welcome to Edictionary</h1>
+    <form id="searchForm">
+        <label for="search-input">enter your word</label>
+        <input type="search" id="search-input" placeholder="search for a word"
+         required>
+           <button type="submit">search</button>
+    </form>
+  
+    <br>
+    <section id="results">
+        <h2 id="word">word will appear here</h2>
+        <p id="definition">definition will appear here</p>
+        <p id="part-of-speech">part of speech will appear here</p>
+
+        <!-- audio playback -->
+         <audio id="audio" controls>your browser does not support audio playback</audio>
+    </section>
+
+    <script src="./index.js"></script>
+    
+</body>
+</html>
