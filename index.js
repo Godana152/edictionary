@@ -2,8 +2,13 @@
 // 1. Accessing the DOM
 const searchForm = document.getElementById('searchForm');
 const searchInput = document.getElementById('search-input');
+
 const wordDisplay = document.getElementById('word');
-const meaningsDisplay = document.getElementById('meanings');
+const nounDisplay = document.getElementById('noun');
+const verbDisplay = document.getElementById('verb');
+const originDisplay = document.getElementById('origin');
+const pronunciationDisplay = document.getElementById('pronunciation');
+
 
 // 2. Handling form submission
 searchForm.addEventListener('submit', function(event) {
@@ -23,10 +28,13 @@ searchForm.addEventListener('submit', function(event) {
 });
 
 
-// Fetching data from the API
+// 3. Fetching data from the API
 async function searchWord(word) {
 
+    wordDisplay.textContent="kindly wait ,loading..."
+
     try {
+
         const response = await fetch(
             `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
         );
@@ -37,58 +45,53 @@ async function searchWord(word) {
 
         const data = await response.json();
 
-        // Get the first word returned
+        // 4. Getting the first word returned
         const wordData = data[0];
 
-        // Display the word
+        // Display the searched word
         wordDisplay.textContent = wordData.word;
 
-        // Get noun meaning
+        // 5. Finding noun meaning
         const noun = wordData.meanings.find(
             meaning => meaning.partOfSpeech === 'noun'
         );
 
-        // Get verb meaning
+        // 6. Finding verb meaning
         const verb = wordData.meanings.find(
             meaning => meaning.partOfSpeech === 'verb'
         );
 
-        // Display noun
+        // 7. Displaying noun meaning
         nounDisplay.textContent = noun
             ? noun.definitions[0].definition
             : 'No noun meaning found';
 
-        // Display verb
+        // Displaying verb meaning
         verbDisplay.textContent = verb
             ? verb.definitions[0].definition
             : 'No verb meaning found';
 
-        // Display origin
-        originDisplay.textContent = wordData.origin || 'Origin unavailable';
+        // 8. Displaying origin
+        originDisplay.textContent =
+            wordData.origin || 'Origin unavailable';
 
-        // Display pronunciation
+        // 9. Displaying pronunciation
+        const phonetic = wordData.phonetic ||
+            wordData.phonetics.find(p => p.text)?.text;
+
         pronunciationDisplay.textContent =
-            wordData.phonetic ||
-            wordData.phonetics.find(p => p.text)?.text ||
-            'Pronunciation unavailable';
+            phonetic || 'Pronunciation unavailable';
 
     } catch (error) {
 
+        // Displaying errors
         wordDisplay.textContent = error.message;
+
+        nounDisplay.textContent = '';
+        verbDisplay.textContent = '';
+        originDisplay.textContent = '';
+        pronunciationDisplay.textContent = '';
 
     }
 }
-
-        
-
-    //  catch (error) {
-
-    //     wordDisplay.textContent = 'Word not found';
-
-    //     meaningsDisplay.textContent = 'Please check your spelling and try again.';
-
-    //     console.log('Something went wrong:', error);
-
-    // }
-
 
