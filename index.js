@@ -1,70 +1,94 @@
-// accessing the DOM
+
+// 1. Accessing the DOM
 const searchForm = document.getElementById('searchForm');
 const searchInput = document.getElementById('search-input');
 const wordDisplay = document.getElementById('word');
-const definitionDisplay = document.getElementById('definition');
-const partOfSpeech = document.getElementById('part-of-speech');
-const audio = document.getElementById('audio');
-// handling form submission
+const meaningsDisplay = document.getElementById('meanings');
+
+// 2. Handling form submission
 searchForm.addEventListener('submit', function(event) {
 
     event.preventDefault();
-    
 
-    const word = searchInput.value;
+    const word = searchInput.value.trim();
+
+    if (!word) {
+        return;
+    }
 
     searchWord(word);
+
     searchInput.value = '';
 
 });
 
-// fetching data from API
-// const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
 
-
+// Fetching data from the API
 async function searchWord(word) {
 
     try {
         const response = await fetch(
             `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
         );
+
         if (!response.ok) {
-    throw new Error('Word not found');
-}
+            throw new Error('Word not found');
+        }
 
         const data = await response.json();
 
-        console.log(data);
-        // displaying to the HTML page
-
+        // Get the first word returned
         const wordData = data[0];
 
-wordDisplay.textContent = wordData.word;
+        // Display the word
+        wordDisplay.textContent = wordData.word;
 
-partOfSpeech.textContent = wordData.meanings[0].partOfSpeech;
+        // Get noun meaning
+        const noun = wordData.meanings.find(
+            meaning => meaning.partOfSpeech === 'noun'
+        );
 
-definitionDisplay.textContent =
-    wordData.meanings[0].definitions[0].definition;
+        // Get verb meaning
+        const verb = wordData.meanings.find(
+            meaning => meaning.partOfSpeech === 'verb'
+        );
 
+        // Display noun
+        nounDisplay.textContent = noun
+            ? noun.definitions[0].definition
+            : 'No noun meaning found';
 
+        // Display verb
+        verbDisplay.textContent = verb
+            ? verb.definitions[0].definition
+            : 'No verb meaning found';
+
+        // Display origin
+        originDisplay.textContent = wordData.origin || 'Origin unavailable';
+
+        // Display pronunciation
+        pronunciationDisplay.textContent =
+            wordData.phonetic ||
+            wordData.phonetics.find(p => p.text)?.text ||
+            'Pronunciation unavailable';
 
     } catch (error) {
 
-        console.log('Something went wrong:', error);
+        wordDisplay.textContent = error.message;
 
     }
- 
 }
 
+        
 
+    //  catch (error) {
 
+    //     wordDisplay.textContent = 'Word not found';
 
+    //     meaningsDisplay.textContent = 'Please check your spelling and try again.';
 
+    //     console.log('Something went wrong:', error);
 
-
-
-
-
-
+    // }
 
 
